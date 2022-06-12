@@ -81,6 +81,13 @@
   ],
   "main": "./dist/main",
   "contributes": {
+    "grammars": [
+      {
+        "scopeName": "comment.documentation.cpp",
+        "injectTo": ["source.cpp"],
+        "path": "./syntaxes/cpp.tmLanguage.json"
+      }
+    ],
     "walkthroughs": [
       {
         "id": "cppWelcome",
@@ -4492,7 +4499,6 @@
     "await-notify": "^1.0.1",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jsdoc": "^36.1.0",
     "event-stream": "^4.0.1",
     "fs-extra": "^8.1.0",
     "glob": "^7.1.6",
