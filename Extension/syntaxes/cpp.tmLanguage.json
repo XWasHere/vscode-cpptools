@@ -1,0 +1,762 @@
+{
+    "scopeName": "comment.documentation.cpp",
+    "injectionSelector": "L:source.cpp",
+    "patterns": [
+        {
+            "name":     "comment.documentation.doxygen.cpp",
+            "begin":    "[ \t]*/\\*[*!]",
+            "end":      "\\*/",
+            "patterns": [
+                {
+                    "name": "comment.documentation.optstar.doxygen.cpp",
+                    "match": "^[ \t]*\\*(?!/)[ \t]*"
+                },
+                { "include": "#cmd" }
+            ]
+        }
+    ],
+    "repository": {
+        "cmd": {
+            "patterns": [
+                { "include": "#cmd_addtogroup" },
+                { "include": "#cmd_callgraph" },
+                { "include": "#cmd_hidecallgraph" },
+                { "include": "#cmd_callergraph" },
+                { "include": "#cmd_hidecallergraph" },
+                { "include": "#cmd_showrefby" },
+                { "include": "#cmd_hiderefby" },
+                { "include": "#cmd_showrefs" },
+                { "include": "#cmd_hiderefs" },
+                { "include": "#cmd_category" },
+                { "include": "#cmd_class" },
+                { "include": "#cmd_concept" },
+                { "include": "#cmd_def" },
+                { "include": "#cmd_defgroup" },
+                { "include": "#cmd_dir" },
+                { "include": "#cmd_enum" },
+                { "include": "#cmd_example" },
+                { "include": "#cmd_endinternal" },
+                { "include": "#cmd_extends" },
+                { "include": "#cmd_file" },
+                { "include": "#cmd_fn" },
+                { "include": "#cmd_headerfile" },
+                { "include": "#cmd_hideinitializer" },
+                { "include": "#cmd_idlexcept" },
+                { "include": "#cmd_implements" },
+                { "include": "#cmd_ingroup" },
+                { "include": "#cmd_interface" },
+                { "include": "#cmd_internal" },
+                { "include": "#cmd_mainpage" },
+                { "include": "#cmd_memberof" },
+                { "include": "#cmd_name" },
+                { "include": "#cmd_namespace" },
+                { "include": "#cmd_nosubgrouping" },
+                { "include": "#cmd_overload" },
+                { "include": "#cmd_package" },
+                { "include": "#cmd_page" },
+                { "include": "#cmd_private" },
+                { "include": "#cmd_privatesection" },
+                { "include": "#cmd_property" },
+                { "include": "#cmd_protected" },
+                { "include": "#cmd_protectedsection" },
+                { "include": "#cmd_protocol" },
+                { "include": "#cmd_public" },
+                { "include": "#cmd_publicsection" },
+                { "include": "#cmd_pure" },
+                { "include": "#cmd_relates" },
+                { "include": "#cmd_relatesalso" },
+                { "include": "#cmd_showinitializer" },
+                { "include": "#cmd_static" },
+                { "include": "#cmd_struct" },
+                { "include": "#cmd_typedef" },
+                { "include": "#cmd_union" },
+                { "include": "#cmd_var" },
+                { "include": "#cmd_vhdlflow" },
+                { "include": "#cmd_weakgroup" },
+
+                { "include": "#cmd_attention" },
+                { "include": "#cmd_author" },
+                { "include": "#cmd_brief" },
+                { "include": "#cmd_bug" },
+                { "include": "#cmd_cond" },
+                { "include": "#cmd_copyright" },
+                { "include": "#cmd_date" },
+                { "include": "#cmd_deprecated" },
+                { "include": "#cmd_details" },
+                { "include": "#cmd_noop" },
+                { "include": "#cmd_raisewarning" },
+                { "include": "#cmd_else" },
+                { "include": "#cmd_elseif" },
+                { "include": "#cmd_endcond" },
+                { "include": "#cmd_endif" },
+                { "include": "#cmd_exception" },
+                { "include": "#cmd_if" },
+                { "include": "#cmd_ifnot" },
+                { "include": "#cmd_invariant" },
+                { "include": "#cmd_note" },
+                { "include": "#cmd_par" },
+                { "include": "#cmd_param" },
+                { "include": "#cmd_parblock" },
+                { "include": "#cmd_endparblock" },
+                { "include": "#cmd_tparam" },
+                { "include": "#cmd_post" },
+                { "include": "#cmd_pre" },
+                { "include": "#cmd_remark" },
+                { "include": "#cmd_return" },
+                { "include": "#cmd_retval" },
+                { "include": "#cmd_sa" },
+                { "include": "#cmd_since" },
+                { "include": "#cmd_test" },
+                { "include": "#cmd_throw" },
+                { "include": "#cmd_todo" },
+                { "include": "#cmd_version" },
+                { "include": "#cmd_warning" },
+                { "include": "#cmd_xrefitem" },
+
+                { "include": "#cmd_addindex" },
+                { "include": "#cmd_anchor" },
+                { "include": "#cmd_cite" },
+                { "include": "#cmd_endlink" },
+                { "include": "#cmd_link" },
+                { "include": "#cmd_ref" },
+                { "include": "#cmd_refitem" },
+                { "include": "#cmd_secreflist" },
+                { "include": "#cmd_endsecreflist" },
+                { "include": "#cmd_subpage" },
+                { "include": "#cmd_tableofcontents" },
+                { "include": "#cmd_section" },
+                { "include": "#cmd_subsection" },
+                { "include": "#cmd_subsubsection" },
+                { "include": "#cmd_paragraph" }
+            ]
+        },
+        "cmd_addtogroup": {
+            "match": "([@\\\\]addtogroup)[ \t]+(.*?)(?:[ \t]+(.*))?$",
+            "captures": {
+                "1": { "name": "support.function.addtogroup.doxygen.cpp" },
+                "2": { "name": "support.class.group.doxygen.cpp" },
+                "3": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_callgraph": {
+            "name": "support.function.callgraph.doxygen.cpp",
+            "match": "([@\\\\]callgraph)"
+        },
+        "cmd_hidecallgraph": {
+            "name": "support.function.hidecallgraph.doxygen.cpp",
+            "match": "([@\\\\]hidecallgraph)"
+        },
+        "cmd_callergraph": {
+            "name": "support.function.callergraph.doxygen.cpp",
+            "match": "([@\\\\]callergraph)"
+        },
+        "cmd_hidecallergraph": {
+            "name": "support.function.hidecallergraph.doxygen.cpp",
+            "match": "([@\\\\]hidecallergraph)"
+        },
+        "cmd_showrefby": {
+            "name": "support.function.showrefby.doxygen.cpp",
+            "match": "([@\\\\]showrefby)"
+        },
+        "cmd_hiderefby": {
+            "name": "support.function.hiderefby.doxygen.cpp",
+            "match": "([@\\\\]hiderefby)"
+        },
+        "cmd_showrefs": {
+            "name": "support.function.showrefs.doxygen.cpp",
+            "match": "([@\\\\]showrefs)"
+        },
+        "cmd_hiderefs": {
+            "name": "support.function.hiderefs.doxygen.cpp",
+            "match": "([@\\\\]hiderefs)"
+        },
+        "cmd_class": {
+            "match": "([@\\\\]class)[ \t]+([^ \t]+)(?:[ \t]+([^ \t]*)(?:[ \t]+([^ \t]*))?)?",
+            "captures": {
+                "1": { "name": "support.function.class.doxygen.cpp" },
+                "2": { "name": "support.class.class.doxygen.cpp" },
+                "3": { "name": "string.unquoted.doxygen.cpp" },
+                "4": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_concept": {
+            "match": "([@\\\\]concept)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.concept.doxygen.cpp" },
+                "2": { "name": "support.class.concept.doxygen.cpp" }
+            }
+        },
+        "cmd_def": {
+            "match": "([@\\\\]def)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.def.doxygen.cpp" },
+                "2": { "name": "entity.name.function.preprocessor.doxygen.cpp" }
+            }
+        },
+        "cmd_defgroup": {
+            "match": "([@\\\\]defgroup)[ \t]+(.*?)(?:[ \t]+(.*))?$",
+            "captures": {
+                "1": { "name": "support.function.defgroup.doxygen.cpp" },
+                "2": { "name": "support.class.group.doxygen.cpp" },
+                "3": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_dir": {
+            "match": "([@\\\\]dir)(?:[ \t]+([^ \t]+))?",
+            "captures": {
+                "1": { "name": "support.function.dir.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_enum": {
+            "match": "([@\\\\]enum)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.enum.doxygen.cpp" },
+                "2": { "name": "support.class.enum.doxygen.cpp" }
+            }
+        },
+        "cmd_example": {
+            "match": "([@\\\\]example)[ \t]+(.+)",
+            "captures": {
+                "1": { "name": "support.function.example.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_endinternal": {
+            "name": "support.function.endinternal.doxygen.cpp",
+            "match": "([@\\\\]endinternal)"
+        },
+        "cmd_extends": {
+            "match": "([@\\\\]extends)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.extends.doxygen.cpp" },
+                "2": { "name": "support.class.class.doxygen.cpp" }
+            }
+        },
+        "cmd_file": {
+            "match": "([@\\\\]file)[ \t]+([^ \t]+)?",
+            "captures": {
+                "1": { "name": "support.function.file.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_fn": {
+            "_TODO": "@xwashere get some syntax highlighting on this",
+            "begin": "[@\\\\]fn[ \t]+",
+            "end":   "\n",
+            "beginCaptures": {
+                "0": { "name": "support.function.fn.doxygen.cpp" }
+            }
+        },
+        "cmd_headerfile": {
+            "match": "([@\\\\]headerfile)[ \t]+([^ \t]+(?:[ \t]+([^ \t]+))?)",
+            "captures": {
+                "1": { "name": "support.function.headerfile.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" },
+                "3": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_hideinitializer": {
+            "match": "([@\\\\]hideinitializer)",
+            "captures": {
+                "1": { "name": "support.function.hideinitializer.doxygen.cpp" }
+            }
+        },
+        "cmd_idlexcept": {
+            "_TODO": "@xwashere find out what these are and how to highlight them",
+            "match": "([@\\\\]idlexcept)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.idlexcept.doxygen.cpp" }
+            }
+        },
+        "cmd_implements": {
+            "match": "([@\\\\]implements)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.implements.doxygen.cpp" },
+                "2": { "name": "support.class.class.doxygen.cpp" }
+            }
+        },
+        "cmd_ingroup": {
+            "match": "([@\\\\]ingroup)((?:[ \t]+[^ \t]+)+)",
+            "captures": {
+                "1": { "name": "support.function.ingroup.doxygen.cpp" },
+                "2": { "name": "support.class.group.doxygen.cpp" }
+            }
+        },
+        "cmd_interface": {
+            "match": "([@\\\\]interface)[ \t]+([^ \t]+)(?:[ \t]+([^ \t]*)(?:[ \t]+([^ \t]*))?)?",
+            "captures": {
+                "1": { "name": "support.function.interface.doxygen.cpp" },
+                "2": { "name": "support.class.interface.doxygen.cpp" },
+                "3": { "name": "string.unquoted.doxygen.cpp" },
+                "4": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_internal": {
+            "name": "support.function.internal.doxygen.cpp",
+            "match": "([@\\\\]internal)"
+        },
+        "cmd_mainpage": {
+            "match": "([@\\\\]mainpage)[ \t]+(.+)?",
+            "captures": {
+                "1": { "name": "support.function.mainpage.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_memberof": {
+            "match": "([@\\\\]memberof)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.memberof.doxygen.cpp" },
+                "2": { "name": "support.class.class.doxygen.cpp" }
+            }
+        },
+        "cmd_name": {
+            "match": "([@\\\\]name)[ \t]+(.+)",
+            "captures": {
+                "1": { "name": "support.function.name.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_namespace": {
+            "match": "([@\\\\]namespace)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.namespace.doxygen.cpp" },
+                "2": { "name": "support.class.namespace.doxygen.cpp" }
+            }
+        },
+        "cmd_nosubgrouping": {
+            "name": "support.function.nosubgrouping.doxygen.cpp",
+            "match": "([@\\\\]internal)"
+        },
+        "cmd_overload": {
+            "_TODO": "@xwashere get some syntax highlighting on this",
+            "begin": "[@\\\\]overload[ \t]+",
+            "end":   "\n",
+            "beginCaptures": {
+                "0": { "name": "support.function.overload.doxygen.cpp" }
+            }
+        },
+        "cmd_package": {
+            "match": "([@\\\\]package)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.package.doxygen.cpp" },
+                "2": { "name": "support.class.package.doxygen.cpp" }
+            }
+        },
+        "cmd_page": {
+            "match": "([@\\\\]page)[ \t]+([^ \t]+)(.+)?",
+            "captures": {
+                "1": { "name": "support.function.page.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" },
+                "3": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_private": {
+            "match": "[@\\\\]private",
+            "name": "support.function.private.doxygen.cpp"
+        },
+        "cmd_privatesection": {
+            "match": "[@\\\\]privatesection",
+            "name": "support.function.privatesection.doxygen.cpp"
+        },
+        "cmd_property": {
+            "match": "([@\\\\]property)[ \t]+(.+)",
+            "captures": {
+                "1": { "name": "support.function.property.doxygen.cpp" },
+                "2": { "name": "variable.other.property" }
+            }
+        },
+        "cmd_protected": {
+            "match": "[@\\\\]protected",
+            "name": "support.function.protected.doxygen.cpp"
+        },
+        "cmd_protectedsection": {
+            "match": "[@\\\\]protectedsection",
+            "name": "support.function.protectedsection.doxygen.cpp"
+        },
+        "cmd_protocol": {
+            "match": "([@\\\\]protocol)[ \t]+([^ \t]+)(?:[ \t]+([^ \t]*)(?:[ \t]+([^ \t]*))?)?",
+            "captures": {
+                "1": { "name": "support.function.protocol.doxygen.cpp" },
+                "2": { "name": "support.class.protocol.doxygen.cpp" },
+                "3": { "name": "string.unquoted.doxygen.cpp" },
+                "4": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_public": {
+            "match": "[@\\\\]public",
+            "name": "support.function.public.doxygen.cpp"
+        },
+        "cmd_publicsection": {
+            "match": "[@\\\\]publicsection",
+            "name": "support.function.publicsection.doxygen.cpp"
+        },
+        "cmd_pure": {
+            "match": "[@\\\\]pure",
+            "name": "support.function.pure.doxygen.cpp"
+        },
+        "cmd_relates": {
+            "match": "([@\\\\]relate[sd])[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.relates.doxygen.cpp" },
+                "2": { "name": "entity.name.function" }
+            }
+        },
+        "cmd_relatesalso": {
+            "match": "([@\\\\]relate[sd]also)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.relatesalso.doxygen.cpp" },
+                "2": { "name": "entity.name.function" }
+            }
+        },
+        "cmd_showinitializer": {
+            "match": "[@\\\\]showinitializer",
+            "name": "support.function.showinitializer.doxygen.cpp"
+        },
+        "cmd_static": {
+            "match": "[@\\\\]static",
+            "name": "support.function.static.doxygen.cpp"
+        },
+        "cmd_struct": {
+            "match": "([@\\\\]struct)[ \t]+([^ \t]+)(?:[ \t]+([^ \t]*)(?:[ \t]+([^ \t]*))?)?",
+            "captures": {
+                "1": { "name": "support.function.struct.doxygen.cpp" },
+                "2": { "name": "support.class.struct.doxygen.cpp" },
+                "3": { "name": "string.unquoted.doxygen.cpp" },
+                "4": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_typedef": {
+            "match": "([@\\\\]typedef)[ \t]+(.+)",
+            "captures": {
+                "1": { "name": "support.function.typedef.doxygen.cpp" }
+            }
+        },
+        "cmd_union": {
+            "match": "([@\\\\]union)[ \t]+([^ \t]+)(?:[ \t]+([^ \t]*)(?:[ \t]+([^ \t]*))?)?",
+            "captures": {
+                "1": { "name": "support.function.union.doxygen.cpp" },
+                "2": { "name": "support.class.union.doxygen.cpp" },
+                "3": { "name": "string.unquoted.doxygen.cpp" },
+                "4": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_var": {
+            "match": "([@\\\\]var)[ \t]+(.+)",
+            "captures": {
+                "1": { "name": "support.function.var.doxygen.cpp" }
+            }
+        },
+        "cmd_vhdlflow": {
+            "match": "([@\\\\]vhdlflow)(?:[ \t]+(.+))",
+            "captures": {
+                "1": { "name": "support.function.vhdlflow.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_weakgroup": {
+            "match": "([@\\\\]weakgroup)[ \t]+([^ \t]+)(?:[ \t]+(.+))",
+            "captures": {
+                "1": { "name": "support.function.weakgroup.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" },
+                "3": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+
+        "cmd_attention": {
+            "match": "([@\\\\]attention)",
+            "name": "support.function.attention.doxygen.cpp"
+        },
+        "cmd_author": {
+            "match": "([@\\\\]authors?)",
+            "name": "support.function.author.doxygen.cpp"
+        },
+        "cmd_brief": {
+            "match": "([@\\\\](?:brief|short))",
+            "name": "support.function.brief.doxygen.cpp"
+        },
+        "cmd_bug": {
+            "match": "([@\\\\]bug)",
+            "name": "support.function.bug.doxygen.cpp"
+        },
+        "cmd_cond": {
+            "match": "([@\\\\]cond)(?:[\t ]+(.+))?",
+            "captures": {
+                "1": { "name": "support.function.cond.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_copyright": {
+            "match": "([@\\\\]copyright)",
+            "name": "support.function.copyright.doxygen.cpp"
+        },
+        "cmd_date": {
+            "match": "([@\\\\]date)",
+            "name": "support.function.date.doxygen.cpp"
+        },
+        "cmd_deprecated": {
+            "match": "([@\\\\]deprecated)",
+            "name": "support.function.deprecated.doxygen.cpp"
+        },
+        "cmd_details": {
+            "match": "([@\\\\]details)",
+            "name": "support.function.details.doxygen.cpp"
+        },
+        "cmd_noop": {
+            "match": "([@\\\\]noop)(.*)",
+            "captures": {
+                "1": { "name": "support.function.noop.doxygen.cpp" }
+            }
+        },
+        "cmd_raisewarning": {
+            "match": "([@\\\\]raisewarning)[ \t]+(.+)",
+            "captures": {
+                "1": { "name": "support.function.raisewarning.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_else": {
+            "match": "([@\\\\]else)",
+            "name": "support.function.else.doxygen.cpp"
+        },
+        "cmd_elseif": {
+            "match": "([@\\\\]elseif)[ \t]+(.+)",
+            "captures": {
+                "1": { "name": "support.function.elseif.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_endcond": {
+            "match": "([@\\\\]endcond)",
+            "name": "support.function.endcond.doxygen.cpp"
+        },
+        "cmd_endif": {
+            "match": "([@\\\\]endif)",
+            "name": "support.function.endif.doxygen.cpp"
+        },
+        "cmd_exception": {
+            "match": "([@\\\\]elseif)[ \t]+(.+)",
+            "captures": {
+                "1": { "name": "support.function.exception.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_if": {
+            "match": "([@\\\\]if)[ \t]+(.+)",
+            "captures": {
+                "1": { "name": "support.function.if.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_ifnot": {
+            "match": "([@\\\\]ifnot)[ \t]+(.+)",
+            "captures": {
+                "1": { "name": "support.function.ifnot.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_invariant": {
+            "match": "([@\\\\]invariant)",
+            "name": "support.function.invariant.doxygen.cpp"
+        },
+        "cmd_note": {
+            "match": "([@\\\\]note)",
+            "name": "support.function.note.doxygen.cpp"
+        },
+        "cmd_par": {
+            "match": "([@\\\\]par)[ \t]+(.+)",
+            "captures": {
+                "1": { "name": "support.function.par.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_param": {
+            "match": "([@\\\\]param)[ \t]*\\[[ \t]*(?:(in)|(out)|(in)[ \t]*,[ \t]*(out))[ \t]*\\][ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.param.doxygen.cpp" },
+                "2": { "name": "variable.language.in.doxygen.cpp" },
+                "3": { "name": "variable.language.out.doxygen.cpp" },
+                "4": { "name": "variable.language.in.doxygen.cpp" },
+                "5": { "name": "variable.language.out.doxygen.cpp" },
+                "6": { "name": "variable.parameter" }
+            }
+        },
+        "cmd_parblock": {
+            "match": "([@\\\\]parblock)",
+            "name": "support.function.parblock.doxygen.cpp"
+        },
+        "cmd_endparblock": {
+            "match": "([@\\\\]endparblock)",
+            "name": "support.function.endparblock.doxygen.cpp"
+        },
+        "cmd_tparam": {
+            "match": "([@\\\\]tparam)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.tparam.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_post": {
+            "match": "([@\\\\]post)",
+            "name": "support.function.post.doxygen.cpp"
+        },
+        "cmd_pre": {
+            "match": "([@\\\\]pre)",
+            "name": "support.function.pre.doxygen.cpp"
+        },
+        "cmd_remark": {
+            "match": "([@\\\\]remarks?)",
+            "name": "support.function.remarks.doxygen.cpp"
+        },
+        "cmd_return": {
+            "match": "([@\\\\](?:result|returns?))",
+            "name": "support.function.return.doxygen.cpp"
+        },
+        "cmd_retval": {
+            "match": "([@\\\\]retval)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.retval.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_sa": {
+            "match": "([@\\\\](?:sa|see))",
+            "name": "support.function.sa.doxygen.cpp"
+        },
+        "cmd_since": {
+            "match": "([@\\\\]since)",
+            "name": "support.function.since.doxygen.cpp"
+        },
+        "cmd_test": {
+            "match": "([@\\\\]test)",
+            "name": "support.function.test.doxygen.cpp"
+        },
+        "cmd_throw": {
+            "match": "([@\\\\]throw)[ \t]+(.+)",
+            "captures": {
+                "1": { "name": "support.function.throw.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_todo": {
+            "match": "([@\\\\]todo)",
+            "name": "support.function.todo.doxygen.cpp"
+        },
+        "cmd_version": {
+            "match": "([@\\\\]version)",
+            "name": "support.function.version.doxygen.cpp"
+        },
+        "cmd_warning": {
+            "match": "([@\\\\]test)",
+            "name": "support.function.warning.doxygen.cpp"
+        },
+        "cmd_xrefitem": {
+            "match": "([@\\\\]xrefitem)[ \t]+([^ \t]+)[ \t]+?(\"[^\"]+\")[ \t]+?(\"[^\"]+\")",
+            "captures": {
+                "1": { "name": "support.function.xrefitem.doxygen.cpp" },
+                "2": { "name": "string.quoted.double.doxygen.cpp" },
+                "3": { "name": "string.quoted.double.doxygen.cpp" }
+            }
+        },
+
+        "cmd_addindex": {
+            "match": "([@\\\\]addindex)[ \t]+(.+)",
+            "captures": {
+                "1": { "name": "support.function.addindex.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_anchor": {
+            "match": "([@\\\\]anchor)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.anchor.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_cite": {
+            "match": "([@\\\\]cite)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.cite.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_endlink": {
+            "match": "([@\\\\]endlink)",
+            "name": "support.function.cmd.endlink.cpp"
+        },
+        "cmd_link": {
+            "match": "([@\\\\]link)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.link.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_ref": {
+            "match": "([@\\\\]anchor)[ \t]+([^ \t]+)(?:[ \t]+(\"[^\"]+\"))?",
+            "captures": {
+                "1": { "name": "support.function.anchor.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" },
+                "3": { "name": "string.quoted.double.doxygen.cpp"}
+            }
+        },
+        "cmd_refitem": {
+            "match": "([@\\\\]refitem)[ \t]+([^ \t]+)",
+            "captures": {
+                "1": { "name": "support.function.refitem.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_secreflist": {
+            "match": "([@\\\\]secreflist)",
+            "name": "support.function.secreflist.doxygen.cpp"
+        },
+        "cmd_endsecreflist": {
+            "match": "([@\\\\]endsecreflist)",
+            "name": "support.function.endsecreflist.doxygen.cpp"
+        },
+        "cmd_subpage": {
+            "match": "([@\\\\]subpage)[ \t]+([^ \t]+)(?:[ \t]+(\"[^\"]+\"))?",
+            "captures": {
+                "1": { "name": "support.function.subpage.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" },
+                "3": { "name": "string.quoted.double.doxygen.cpp"}
+            }
+        },
+        "cmd_tableofcontents": {
+            "match": "([@\\\\]tableofcontents)",
+            "name": "support.function.tableofcontents.doxygen.cpp"
+        },
+        "cmd_section": {
+            "match": "([@\\\\]section)[ \t]+([^ \t]+)[ \t]*(.+)",
+            "captures": {
+                "1": { "name": "support.function.section.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" },
+                "3": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_subsection": {
+            "match": "([@\\\\]subsection)[ \t]+([^ \t]+)[ \t]*(.+)",
+            "captures": {
+                "1": { "name": "support.function.subsection.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" },
+                "3": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_subsubsection": {
+            "match": "([@\\\\]subsubsection)[ \t]+([^ \t]+)[ \t]*(.+)",
+            "captures": {
+                "1": { "name": "support.function.subsubsection.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" },
+                "3": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        },
+        "cmd_paragraph": {
+            "match": "([@\\\\]paragraph)[ \t]+([^ \t]+)[ \t]*(.+)",
+            "captures": {
+                "1": { "name": "support.function.paragraph.doxygen.cpp" },
+                "2": { "name": "string.unquoted.doxygen.cpp" },
+                "3": { "name": "string.unquoted.doxygen.cpp" }
+            }
+        }
+    }
+}
