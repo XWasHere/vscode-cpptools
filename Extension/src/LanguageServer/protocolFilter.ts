@@ -11,6 +11,7 @@ import { Client } from './client';
 import * as vscode from 'vscode';
 import { CppSettings, OtherSettings } from './settings';
 import { onDidChangeActiveTextEditor, processDelayedDidOpen } from './extension';
+import { InjectedServer } from './Injected/injectedServer';
 
 export function createProtocolFilter(clients: ClientCollection): Middleware {
     // Disabling lint for invoke handlers
@@ -79,6 +80,7 @@ export function createProtocolFilter(clients: ClientCollection): Middleware {
             if (!me.TrackedDocuments.has(textDocumentChangeEvent.document)) {
                 processDelayedDidOpen(textDocumentChangeEvent.document);
             }
+            InjectedServer.server.onDidChangeTextDocument(textDocumentChangeEvent);
             me.onDidChangeTextDocument(textDocumentChangeEvent);
             me.notifyWhenLanguageClientReady(() => sendMessage(textDocumentChangeEvent));
         },

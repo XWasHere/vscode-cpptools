@@ -27,6 +27,7 @@ import { Readable } from 'stream';
 import * as nls from 'vscode-nls';
 import { CppBuildTaskProvider } from './cppBuildTaskProvider';
 import { UpdateInsidersAccess } from '../main';
+import { InjectedServer } from './Injected/injectedServer';
 
 nls.config({ messageFormat: nls.MessageFormat.bundle, bundleFormat: nls.BundleFormat.standalone })();
 const localize: nls.LocalizeFunc = nls.loadMessageBundle();
@@ -171,6 +172,9 @@ export async function activate(): Promise<void> {
             telemetry.logLanguageServerEvent("conflictingExtension");
         }
     }
+
+    console.log("starting injected language server");
+    InjectedServer.activate();
 
     console.log("starting language server");
     clients = new ClientCollection();
