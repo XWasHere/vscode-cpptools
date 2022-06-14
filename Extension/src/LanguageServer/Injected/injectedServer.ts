@@ -304,8 +304,7 @@ export class File {
 
                 let suc;
                 while (tokens[npos] && !(suc = tokens[npos] instanceof TDocClose)) {
-                    //@ts-ignore
-                    let tok;
+                    let tok: Token;
                     node.owned.push(tok = tokens[npos++]);
                     node.content.push(tok);
                     
@@ -314,11 +313,8 @@ export class File {
                         let nm  = tok.name;
                         let idx = node.text.push({ targets: [] }) - 1;
                         processing_queue.push(InjectedServer.server.getWSSymbols(ns, nm, false).then(async (syms) => {
-                            // console.log(`${ns}::${nm}`);
-                            // console.log(tok);
                             if (syms.length == 0) {
-                                //@ts-ignore
-                                node.text[idx] = tok.raw;
+                                node.text[idx] = (tok as TFCLink).raw;
                             } else {
                                 //@ts-ignore 
                                 node.text[idx].targets = syms;
@@ -379,6 +375,10 @@ export class File {
     }
 }
 
+type SymbolInformation = {
+    declaration: boolean;
+} & vscode.SymbolInformation;
+
 /**
  * i could mangle my code with the upstream code, but it would make
  * it really difficult if something changed a bunch, so instead ill
@@ -392,12 +392,49 @@ export class InjectedServer {
     }
 
 //#region oh no
+    symcache: {
+        [index: string]: {
+            time: number;
+            data: SymbolInformation[];
+        };
+    } = {};
     wsymp: WorkspaceSymbolProvider | undefined;
     
-    async getWSSymbols(ns: string, name: string, includedcls: boolean) {
-        return (await this.wsymp?.provideWorkspaceSymbols(`${ns}::${name}`, CancellationToken.None) ?? []).filter((sym) => {
+    cacheSymbols(ns: string, name: string, data: SymbolInformation[], time: number) {
+        this.symcache[`${ns}##${name}`] = {
+            time: Date.now() + time,
+            data: data
+        }
+        console.log(this.symcache);
+    }
+
+    trySymbolCache(ns: string, name: string) {
+        console.log(this.symcache);
+        let ent = this.symcache[`${ns}##${name}`];
+        if (ent) {
+            if (ent.time < Date.now()) {
+                this.killSymbols(ns, name);
+                return undefined;
+            } else return ent.data;
+        } else return undefined;
+    }
+
+    killSymbols(ns: string, name: string) {
+        if (this.symcache[`${ns}##${name}`]) {
+            delete this.symcache[`${ns}##${name}`]
+            console.log(`kill cache for ${ns}::${name}`);
+        }
+    }
+
+    async getWSSymbols(ns: string, name: string, includedcls: boolean = true, nocache: boolean = false) : Promise<SymbolInformation[]> {
+        if (!nocache) {
+            let c = this.trySymbolCache(ns, name);
+            if (c) return c;
+        }
+
+        let syms = (await this.wsymp?.provideWorkspaceSymbols(`${ns}::${name}`, CancellationToken.None) ?? []).filter((sym) => {
             //@ts-ignore
-            let nsym : { declaration: boolean } & typeof sym = sym;
+            let nsym : SymbolInformation = sym;
             if (sym.containerName != (ns == "" ? undefined : ns)) return;
             if ((/[^(<]*/.exec(sym.name)??[""])[0] != name) return;
             //@ts-ignore
@@ -406,7 +443,11 @@ export class InjectedServer {
             nsym.declaration = nsym.declaration != undefined;
             if (includedcls ? 0 : nsym.declaration) return;
             return nsym;
-        });
+        }) as SymbolInformation[];
+
+        if (!nocache) this.cacheSymbols(ns, name, syms, 10000);
+
+        return syms;
     }
 //#endregion
 //#region file bookkeeping
