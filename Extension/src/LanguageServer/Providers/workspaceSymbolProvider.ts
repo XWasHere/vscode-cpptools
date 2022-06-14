@@ -6,11 +6,12 @@ import * as vscode from 'vscode';
 import { DefaultClient, GetSymbolInfoRequest, WorkspaceSymbolParams, LocalizeSymbolInformation, SymbolScope } from '../client';
 import { makeVscodeLocation } from '../utils';
 import * as util from '../../common';
-
+import { InjectedServer } from '../Injected/injectedServer';
 export class WorkspaceSymbolProvider implements vscode.WorkspaceSymbolProvider {
     private client: DefaultClient;
     constructor(client: DefaultClient) {
         this.client = client;
+        InjectedServer.server.wsymp = this;
     }
 
     public async provideWorkspaceSymbols(query: string, token: vscode.CancellationToken): Promise<vscode.SymbolInformation[]> {

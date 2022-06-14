@@ -80,8 +80,8 @@ export function createProtocolFilter(clients: ClientCollection): Middleware {
             if (!me.TrackedDocuments.has(textDocumentChangeEvent.document)) {
                 processDelayedDidOpen(textDocumentChangeEvent.document);
             }
-            InjectedServer.server.onDidChangeTextDocument(textDocumentChangeEvent);
             me.onDidChangeTextDocument(textDocumentChangeEvent);
+            InjectedServer.server.onDidChangeTextDocument(textDocumentChangeEvent);
             me.notifyWhenLanguageClientReady(() => sendMessage(textDocumentChangeEvent));
         },
         willSave: defaultHandler,

@@ -1,4 +1,6 @@
 import * as vscode from 'vscode';
+import { CancellationToken } from 'vscode-languageclient';
+import { WorkspaceSymbolProvider } from '../Providers/workspaceSymbolProvider';
 
 export class Token {
     begin: number = -1;
@@ -32,7 +34,22 @@ export class TFCLink extends Token {
     args: string[] = [];
     ns:   string[] = [];
     name: string   = "";
+    raw:  string   = "";
+}
 
+type PNAny = Token | ParseNode;
+
+export class ParseNode {
+    owned: (ParseNode|Token)[] = [];
+};
+
+export class PNDocNode extends ParseNode {
+    text:    (string|object)[] = [];
+    content: PNAny[]           = []
+};
+
+export class PNDocument extends ParseNode {
+    docs: PNDocNode[] = [];
 }
 
 export class File {
@@ -41,7 +58,7 @@ export class File {
     
     tokens:  Token[] = [];
 
-    reparse() {
+    async reparse() {
         this.tokens = [];
 
         let src = this.content;
@@ -243,6 +260,7 @@ export class File {
                     tok.name = src.substring(b_fn, e_fn);
                     tok.ns = s_fn;
                     tok.args = a_fn; 
+                    tok.raw = src.substring(pos, np);
                     this.tokens.push(tok);
 
                     pos = np;
@@ -265,8 +283,99 @@ export class File {
             }
         }
 
-        console.log(d);
-        console.log(this.tokens);
+        //console.log(d);
+        //console.log(this.tokens);
+        let processing_queue: Promise<void>[] = [];
+
+        let tokens = this.tokens;
+
+        type pres<T> = { res: T | undefined, pos: number };
+
+        // the jit will *probably* inline this.
+        function die(pos: number) { return { res: undefined, pos }; }
+        function accept<T>(res: T, pos: number) { return { res, pos }; }
+
+        function parse_docnode(from: number): pres<PNDocNode> {
+            let npos = from;
+            let node = new PNDocNode();
+
+            if (tokens[npos] instanceof TDocOpen) {
+                node.owned.push(tokens[npos++]);
+
+                let suc;
+                while (tokens[npos] && !(suc = tokens[npos] instanceof TDocClose)) {
+                    //@ts-ignore
+                    let tok;
+                    node.owned.push(tok = tokens[npos++]);
+                    node.content.push(tok);
+                    
+                    if (tok instanceof TFCLink) {
+                        let ns  = tok.ns.join("::");
+                        let nm  = tok.name;
+                        let idx = node.text.push({ targets: [] }) - 1;
+                        processing_queue.push(InjectedServer.server.getWSSymbols(ns, nm, false).then(async (syms) => {
+                            // console.log(`${ns}::${nm}`);
+                            // console.log(tok);
+                            if (syms.length == 0) {
+                                //@ts-ignore
+                                node.text[idx] = tok.raw;
+                            } else {
+                                //@ts-ignore 
+                                node.text[idx].targets = syms;
+                            }
+                            return;
+                        }));
+                    } else if (tok instanceof TWhiteSpace || tok instanceof TGenWord) {
+                        let t = tok.text;
+                        while ((tok = tokens[npos]) && (tok instanceof TWhiteSpace || tok instanceof TGenWord)) {
+                            node.content.push(tok);
+                            node.owned.push(tok);
+                            t += tok.text;
+                            npos++;
+                        }
+                        node.text.push(t);
+                    } else if (tok instanceof TNewLine) { // newlines are part of the syntax here so these generic newlines need to be tested last
+                        node.content.push(tok);
+                        node.owned.push(tok);
+                        node.text.push("\n");
+                    }
+                }
+
+                if (!suc) return die(from);
+
+                node.owned.push(tokens[npos++]);
+
+                return accept(node, npos);
+            }
+
+            return die(from);
+        }
+
+        function parse_document(from: number): pres<PNDocument> {
+            let docs = [];
+            let npos = from;
+            let node = new PNDocument();
+            
+            while (1) {
+                let {res, pos} = parse_docnode(npos)
+                
+                if (res) {
+                    docs.push(res);
+                    node.owned.push(res);
+                    npos = pos;
+                } else break;
+            }
+
+            node.docs = docs;
+
+            return { res: node, pos: npos };
+        }
+        
+        let root = parse_document(0);
+
+        await Promise.all(processing_queue);
+
+        console.log(root);
     }
 }
 
@@ -277,11 +386,29 @@ export class File {
  */
 export class InjectedServer {
     static server: InjectedServer;
-
+    
     static activate(): void {
         InjectedServer.server = new InjectedServer();
     }
 
+//#region oh no
+    wsymp: WorkspaceSymbolProvider | undefined;
+    
+    async getWSSymbols(ns: string, name: string, includedcls: boolean) {
+        return (await this.wsymp?.provideWorkspaceSymbols(`${ns}::${name}`, CancellationToken.None) ?? []).filter((sym) => {
+            //@ts-ignore
+            let nsym : { declaration: boolean } & typeof sym = sym;
+            if (sym.containerName != (ns == "" ? undefined : ns)) return;
+            if ((/[^(<]*/.exec(sym.name)??[""])[0] != name) return;
+            //@ts-ignore
+            ({1:nsym.name,2:nsym.declaration}=/^(.*?)( \(declaration\))?$/.exec(sym.name)??[sym.name,sym.name,undefined]);
+            //@ts-ignore
+            nsym.declaration = nsym.declaration != undefined;
+            if (includedcls ? 0 : nsym.declaration) return;
+            return nsym;
+        });
+    }
+//#endregion
 //#region file bookkeeping
     files : {[index: string]: File} = {};
 
